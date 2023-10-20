@@ -349,9 +349,9 @@ int main(int argc, char *argv[])
 		communication_time += (t2.tv_sec-t1.tv_sec)*1000000 + (t2.tv_usec-t1.tv_usec);
 		generation_time += (g2.tv_sec-g1.tv_sec)*1000000 + (g2.tv_usec-g1.tv_usec);
 
-		if (i == 0 || i == 50 || i == 99)
+		if (i == 0 || i == 25 || i == 50 || i == 75 || i == 99)
 		{                                                                  
-    		DisplayGoL(rank, n, p, cell); // display contents of matrix every x generations
+    		   DisplayGoL(rank, n, p, cell); // display contents of matrix every x generations
 		}
     }
 
@@ -359,18 +359,18 @@ int main(int argc, char *argv[])
 
     int *comm_time;
     if (rank == 0)
-	{
+    {
     	comm_time = (int *)malloc(p * sizeof(int)); // allocate mem
-	}
-	// get comm times
+    }
+    // get comm times
     MPI_Gather(&communication_time, 1, MPI_INT, comm_time, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
     int *gen_time;
     if (rank == 0)
-	{
+    {
     	gen_time = (int *)malloc(p* sizeof(int)); // allocate mem
-	}
-	// get gen times
+    }
+    // get gen times
     MPI_Gather(&generation_time, 1, MPI_INT, gen_time, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
     if(rank == 0)
