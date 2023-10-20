@@ -111,7 +111,7 @@ void Simulate( int rank,  int n,  int p,  int *cell)
     MPI_Recv(prev, n, MPI_INT,(rank - 1 + p) % p, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
     gettimeofday(&t2, NULL);
 
-    communication_time += elapsedTime(t1, t2);
+    communication_time += (t2.tv_sec-t1.tv_sec)*1000000 + (t2.tv_usec-t1.tv_usec);
 
     for (int i = 0; i < n * n / p; i++)
 	{
@@ -330,7 +330,7 @@ int main(int argc, char *argv[])
     gettimeofday(&g1, NULL);
     GenerateInitialGoL(rank, n, p, cell); // generate initial matrix
     gettimeofday(&g2, NULL);
-    generation_time += elapsedTime(g1, g2);
+    generation_time += (g2.tv_sec-g1.tv_sec)*1000000 + (g2.tv_usec-g1.tv_usec);
 
     for (int i = 0; i < G; i++)
 	{
@@ -346,8 +346,8 @@ int main(int argc, char *argv[])
 
 		gettimeofday(&g2, NULL); // gen time
 
-		communication_time += elapsedTime(t1, t2);
-		generation_time += elapsedTime(g1, g2);
+		communication_time += (t2.tv_sec-t1.tv_sec)*1000000 + (t2.tv_usec-t1.tv_usec);
+		generation_time += (g2.tv_sec-g1.tv_sec)*1000000 + (g2.tv_usec-g1.tv_usec);
 
 		if (i == 0 || i == 50 || i == 99)
 		{                                                                  
